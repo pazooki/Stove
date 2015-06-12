@@ -1,0 +1,34 @@
+
+# Examples:
+@staticmethod
+def s3_test():
+    src = Source(source='local:///tmp/incoming/', min_size=1, max_size=10)
+    s3 = S3()
+    for f in src.ls():
+        s3.upload(f, '/bering-segments/dp-incomings/')
+    print s3.uploaded
+
+    s3 = S3()
+    s3.download('/bering-segments/dp-incomings/', '/tmp')
+
+@staticmethod
+def hdfs_test():
+    src = Source(source='local:///tmp/incoming', min_size=1, max_size=10)
+    hdfs = HDFS()
+    for f in src.ls():
+        hdfs.upload(f, '/tmp/')
+    print hdfs.uploaded
+
+    hdfs = HDFS()
+    hdfs.download('/tmp/', '/tmp/processed')
+
+@staticmethod
+def local_test():
+    src = Source(source='local:///tmp/incoming', min_size=1, max_size=10)
+    local = LocalFileSystem()
+    for f in src.ls():
+        local.upload(f, 'root@ec2-54-174-83-91.compute-1.amazonaws.com:/tmp/processed')
+    print local.uploaded
+
+    local = LocalFileSystem()
+    local.download('root@ec2-54-174-83-91.compute-1.amazonaws.com:/tmp/processed/*', '/tmp/processed/')

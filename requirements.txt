@@ -1,0 +1,7 @@
+setproctitle
+requests==2.5.1
+argparse==1.2.1
+boto==2.34.0
+-e git+https://github.com/bwhite/hadoopy@ff39b4e6d4e6efaf1f571cf0f2c0e0d7ab28c2d6#egg=hadoopy-master
+ujson==1.33
+wsgiref==0.1.2
