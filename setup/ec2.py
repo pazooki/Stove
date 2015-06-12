@@ -7,7 +7,7 @@ project_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.insert(0, project_dir)
 from settings import config
 
-ENV = 'source /root/Sparks/setup/env.sh;'
+ENV = 'source /root/stove/setup/env.sh;'
 
 def log(opts, msg):
     if opts.debug:
@@ -21,10 +21,10 @@ def sync(opts):
 
 
 def provision(opts):
-    opts.master_shell = 'chmod -R +x /root/Sparks'
+    opts.master_shell = 'chmod -R +x /root/stove'
     master_shell(opts)
     opts.master_shell = 'chmod +x %(provision_script)s; source %(provision_script)s' % {
-        'provision_script': '/root/Sparks/setup/provision.sh'
+        'provision_script': '/root/stove/setup/provision.sh'
     }
     master_shell(opts)
 
@@ -91,7 +91,6 @@ def prep_env(opts):
 
 def main(opts):
     prep_env(opts)
-
     if opts.sync:
         sync(opts)
 
@@ -111,30 +110,30 @@ if __name__ == '__main__':
         If you are setting a placement-group you must specify a zone in that region as well
         to get the name of zones run this command: $aws ec2 describe-availability-zones --region us-east-1
 
-    # Now cd to the root directory of bering repo
-    python Sparks/setup/ec2.py
+    # Now cd to the root directory of the project
+    python setup/ec2.py
 
     # That will start a cluster and it will take care of other configurations for you
     # If it fails in the middle for whatever reason, you can restart the configuration without creating new instances by:
-    python Sparks/setup/ec2.py -x --resume
+    python setup/ec2.py -x --resume
 
     # Now if you want to run the segment_stats job after the cluster is up and running you could do it by syncing this project with to /root/Sparks on the master
-    python Sparks/setup/ec2.py --sync
+    python setup/ec2.py --sync
 
     # Now you could ssh to the master by running this command:
-    python Sparks/setup/ec2.py -a login
+    python setup/ec2.py -a login
 
     # Now we want to provision all slaves
-    python Sparks/setup/ec2.py --provision
+    python setup/ec2.py --provision
 
     # To run a command remotely on the master (you have to put it inside single quotes, e.g. 'tail -100 /var/log/messages')
-    python Sparks/setup/ec2.py --master-shell '<cmd>'
+    python setup/ec2.py --master-shell '<cmd>'
 
     # Lets run a job, the provision script will put spark in your path so you could just submit the application like this:
-    python Sparks/setup/ec2.py --sync --master-shell 'spark-submit /root/Sparks/apps/segments/segment_stats.py'
+    python setup/ec2.py --sync --master-shell 'spark-submit /root/apps/example/hello_world.py'
 
     # You could watch the logs on a separate terminal
-    python setup/ec2.py --master-shell 'tail -f /var/log/sparks.log'
+    python setup/ec2.py --master-shell 'tail -f /var/log/stove.log'
 """
     parser = optparse.OptionParser(usage)
     parser.add_option('-b', '--spark-base-path', dest='spark_path', default='~/spark', help='Spark Base Directory')
@@ -142,8 +141,8 @@ if __name__ == '__main__':
     parser.add_option('-s', '--slaves', dest='slaves', default='2', help='Number of slaves')
     parser.add_option('-r', '--region', dest='region', default='us-east-1', help='AWS Region')
     parser.add_option('-z', '--zone', dest='zone', default='us-east-1b', help='AWS Zone')
-    parser.add_option('-k', '--key', dest='key', default=config.cluster.get('key'), help='AWS Key for the region')
-    parser.add_option('-i', '--ssh-key', dest='ssh_key', default=config.cluster.get('ssh_key'), help='SSH private key for the region')
+    parser.add_option('-k', '--key-pair', dest='key', default=config.cluster.get('key'), help='AWS Key for the region')
+    parser.add_option('-i', '--identity-file', dest='ssh_key', default=config.cluster.get('ssh_key'), help='SSH private key for the region')
     parser.add_option('-n', '--name', dest='name', default='sparkcluster', help='Cluster Name')
     parser.add_option('-x', '--extras', dest='extras', default=None, help='Extras')
     parser.add_option('--sync', dest='sync', action="store_true", default=False, help='Only sync the project directory')

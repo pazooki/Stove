@@ -5,7 +5,7 @@ import shutil
 
 try:
     from formatting import log, json_encode
-    from settings.config import sparks_config
+    from settings.config import stove_config
 except ImportError:
     try:
         from libs.formatting import log, json_encode
@@ -133,7 +133,7 @@ class Nuke(Task):
         try:
             fs = self.extras
             if fs.nuke():
-                if sparks_config.get('debug'):
+                if stove_config.get('debug'):
                     log('Nuked:\n%s' % ''.join(['\t\t%s\n' % f for f in fs.get_processed_files()]))
                 else:
                     log('Nuked %d files.' % len(fs.get_processed_files()))

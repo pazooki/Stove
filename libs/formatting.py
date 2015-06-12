@@ -2,22 +2,22 @@ import ujson
 import logging
 import setproctitle
 try:
-    from settings.config import sparks_config
+    from settings.config import stove_config
 except Exception:
     sparks_config = {'debug': True}
 
 
-if sparks_config.get('debug'):
+if stove_config.get('debug'):
     fmt = '%(asctime)s - %(process)d - %(pathname)s:%(lineno)d - %(message)s'
-    logging.basicConfig(filename='/var/log/sparks.log', level=logging.INFO, format=fmt)
+    logging.basicConfig(filename='/var/log/stove.log', level=logging.INFO, format=fmt)
     logger = logging.getLogger('sparks')
     log = logger.info
 else:
     fmt = '%(asctime)s - %(name)s - %(process)d - %(message)s'
-    logging.basicConfig(filename='/var/log/sparks.log', level=logging.INFO, format=fmt)
+    logging.basicConfig(filename='/var/log/stove.log', level=logging.INFO, format=fmt)
 
     def log(msg):
-        logger = logging.getLogger('sparks.%s' % setproctitle.getproctitle())
+        logger = logging.getLogger('stove.%s' % setproctitle.getproctitle())
         logger.info(msg)
 
 

@@ -1,4 +1,4 @@
-import os
+README.mdimport os
 import sys
 import time
 import imp
@@ -11,7 +11,7 @@ sys.path.insert(0, project_dir)
 from libs.formatting import log
 from libs.finalizer import Finalizer
 from libs.filesystem import FileSystem
-from settings.config import sparks_config
+from settings.config import stove_config
 
 try:
     from pyspark import SparkConf
@@ -120,7 +120,7 @@ class Application(object):
             ending_msg = ''
             if status in ['ended']:
                 ending_msg += 'Application execution ended successfully '
-                if sparks_config.get('debug'):
+                if stove_config.get('debug'):
                     ending_msg += 'passed all stages: \n%s' % self.fancy_stages
             elif status in ['failed']:
                 ending_msg += 'Application execution failed at: >>>> %s <<<<\n' % self.stages[-1]

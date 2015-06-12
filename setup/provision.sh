@@ -82,14 +82,14 @@ function gangliarestartonslaves {
 }
 
 
-#installsysonmaster
-#installsysonslaves
-#installpython27onmaster
-#installpython27onslaves
-#installpiponmaster
-#installpiponslaves
-#installdependenciesonmaster
-#installdependenciesonslaves
-#configuremaster
-#configureslaves
-gangliarestartonslaves
+installsysonmaster
+installsysonslaves
+installpython27onmaster
+installpython27onslaves
+installpiponmaster
+installpiponslaves
+installdependenciesonmaster
+installdependenciesonslaves
+configuremaster
+configureslaves
+#gangliarestartonslaves
